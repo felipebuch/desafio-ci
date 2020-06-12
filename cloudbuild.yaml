@@ -1,19 +1,19 @@
 steps:
 
-- id: "Rodando testes"
+- id: "Rodando Testes"
   name: 'gcr.io/cloud-builders/go'
   args: ['test','-v','./...']
   env: ["GOPATH=."]
 
-- id: "Compilando projeto"
+- id: "Compilando Projeto"
   name: 'gcr.io/cloud-builders/docker'
   args: ['build', '-f', 'Dockerfile.builder','-t', 'gcr.io/$PROJECT_ID/builder-desafio-ci:latest', '.']
 
-- id: "Rodando container builder"
+- id: "Rodando Container - Builder"
   name: 'gcr.io/cloud-builders/docker'
   args: ['run', '--name', 'container-builder-desafio', 'gcr.io/$PROJECT_ID/builder-desafio-ci:latest']
 
-- id: "Verificando docker ps"
+- id: "Rodando comando docker ps"
   name: 'gcr.io/cloud-builders/docker'
   args: ['ps', '-a']
 
@@ -21,11 +21,11 @@ steps:
   name: 'gcr.io/cloud-builders/docker'
   args: ['container', 'cp', 'container-builder-desafio:/go/src/desafio/desafio', 'desafio']
 
-- id: "Build com arquivo binario"
+- id: "Build final com arquivo binario"
   name: 'gcr.io/cloud-builders/docker'
   args: ['build','-f','Dockerfile.prod','-t','gcr.io/$PROJECT_ID/desafio-ci:latest','.']
 
-- id: "Rodando container final"
+- id: "Rodando Container - Final"
   name: 'gcr.io/cloud-builders/docker'
   args: ['run', '--name', 'container-desafio', 'gcr.io/$PROJECT_ID/desafio-ci:latest']
 
