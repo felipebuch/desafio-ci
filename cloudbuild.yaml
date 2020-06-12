@@ -11,7 +11,7 @@ steps:
 
 - id: "Rodando container"
   name: 'gcr.io/cloud-builders/docker'
-  args: ['run', '--name', 'container-desafio', 'gcr.io/$PROJECT_ID/builder-desafio-ci:latest']
+  args: ['run', '--name', 'container-builder-desafio', 'gcr.io/$PROJECT_ID/builder-desafio-ci:latest']
 
 - id: "Verificando docker ps"
   name: 'gcr.io/cloud-builders/docker'
@@ -19,9 +19,16 @@ steps:
 
 - id: "Copiando arquivo binario"
   name: 'gcr.io/cloud-builders/docker'
-  args: ['container', 'cp', 'container-desafio:/go/src/desafio/desafio', 'desafio']
+  args: ['container', 'cp', 'container-builder-desafio:/go/src/desafio/desafio', 'desafio']
 
 - id: "Build com arquivo binario"
   name: 'gcr.io/cloud-builders/docker'
   args: ['build','-f','Dockerfile.prod','-t','gcr.io/$PROJECT_ID/desafio-ci:latest','.']
+
+- id: "Rodando container"
+  name: 'gcr.io/cloud-builders/docker'
+  args: ['run', '--name', 'container-desafio', 'gcr.io/$PROJECT_ID/desafio-ci:latest']
+
+images:
+  - 'gcr.io/$PROJECT_ID/desafio-ci:latest'
   
