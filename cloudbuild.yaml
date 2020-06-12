@@ -1,8 +1,8 @@
 steps:
 
 - id: "Rodando testes"
-  name: "gcr.io/cloud-builders/go"
-  args: ["test","main"]
+  name: 'gcr.io/cloud-builders/go'
+  args: ['test','-v','./...']
   env: ["GOPATH=."]
 
 - id: "Compilando projeto"
@@ -24,3 +24,4 @@ steps:
 - id: "Build com arquivo binario"
   name: 'gcr.io/cloud-builders/docker'
   args: ['build','-f','Dockerfile.prod','-t','gcr.io/$PROJECT_ID/desafio-ci:latest','.']
+  
